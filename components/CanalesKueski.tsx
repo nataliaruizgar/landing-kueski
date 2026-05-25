@@ -29,10 +29,9 @@ export default function CanalesKueski() {
           {CANALES.map((canal, i) => {
             const isActive = active === i;
             return (
-              <button
+              <div
                 key={canal.titulo}
-                onClick={() => setActive(i)}
-                className={`group relative w-full overflow-hidden rounded-card border bg-white p-5 text-left transition-all duration-300 tablet:p-6 ${
+                className={`group relative w-full overflow-hidden rounded-card border bg-white text-left transition-all duration-300 ${
                   isActive
                     ? "border-[#E26153]/30 shadow-cardHover"
                     : "border-gray-100 shadow-card hover:border-[#E26153]/20"
@@ -41,37 +40,58 @@ export default function CanalesKueski() {
                 {isActive && (
                   <span className="absolute left-0 top-0 h-full w-1 bg-[#E26153]" aria-hidden="true" />
                 )}
-                <div className="flex items-center justify-between gap-3">
-                  <span
-                    className={`font-inter text-[11px] font-semibold uppercase tracking-[0.15em] ${
-                      isActive ? "text-[#E26153]" : "text-gray-600"
+                <button
+                  onClick={() => setActive(i)}
+                  className="block w-full p-5 text-left tablet:p-6"
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <span
+                      className={`font-inter text-[11px] font-semibold uppercase tracking-[0.15em] ${
+                        isActive ? "text-[#E26153]" : "text-gray-600"
+                      }`}
+                    >
+                      {canal.eyebrow}
+                    </span>
+                    {canal.badge && (
+                      <span className="rounded-full bg-[#E26153] px-2 py-0.5 font-inter text-[10px] font-semibold uppercase tracking-wider text-white">
+                        {canal.badge}
+                      </span>
+                    )}
+                  </div>
+                  <h3
+                    className={`mt-2 font-sora text-[20px] font-normal leading-[1.2] tablet:text-[22px] ${
+                      isActive ? "text-gray-900" : "text-gray-700"
                     }`}
                   >
-                    {canal.eyebrow}
-                  </span>
-                  {canal.badge && (
-                    <span className="rounded-full bg-[#E26153] px-2 py-0.5 font-inter text-[10px] font-semibold uppercase tracking-wider text-white">
-                      {canal.badge}
-                    </span>
-                  )}
-                </div>
-                <h3
-                  className={`mt-2 font-sora text-[20px] font-normal leading-[1.2] tablet:text-[22px] ${
-                    isActive ? "text-gray-900" : "text-gray-700"
-                  }`}
-                >
-                  {canal.titulo}
-                </h3>
-                <p className="mt-2 font-inter text-[14px] leading-[1.5] text-gray-700">
-                  {canal.descripcion}
-                </p>
-              </button>
+                    {canal.titulo}
+                  </h3>
+                  <p className="mt-2 font-inter text-[14px] leading-[1.5] text-gray-700">
+                    {canal.descripcion}
+                  </p>
+                </button>
+
+                {/* Mock visual dentro de la card SOLO en mobile cuando es activa */}
+                {isActive && (
+                  <div className="relative overflow-hidden border-t border-gray-100 bg-gradient-to-br from-[#FFEFEC] via-white to-[#F0F8FF] p-5 tablet:hidden">
+                    <div
+                      aria-hidden="true"
+                      className="pointer-events-none absolute -right-12 -top-12 h-48 w-48 rounded-full opacity-50"
+                      style={{ background: "radial-gradient(circle, #F1B0A9, transparent 70%)", filter: "blur(50px)" }}
+                    />
+                    <div className="relative z-10">
+                      {i === 0 && <LinkProductoMock />}
+                      {i === 1 && <PasarelaMock />}
+                      {i === 2 && <BotonT1Mock />}
+                    </div>
+                  </div>
+                )}
+              </div>
             );
           })}
         </div>
 
-        {/* Columna derecha — visual del canal activo */}
-        <div className="relative overflow-hidden rounded-card bg-gradient-to-br from-[#FFEFEC] via-white to-[#F0F8FF] p-8 shadow-card tablet:p-10">
+        {/* Columna derecha — visual del canal activo (solo desktop) */}
+        <div className="relative hidden overflow-hidden rounded-card bg-gradient-to-br from-[#FFEFEC] via-white to-[#F0F8FF] p-8 shadow-card tablet:block tablet:p-10">
           {/* Glow */}
           <div
             aria-hidden="true"
@@ -312,8 +332,8 @@ function SpeiLogo() {
 
 function BotonT1Mock() {
   return (
-    <div className="rounded-[18px] border border-gray-100 bg-white p-5 shadow-mockup">
-      <div className="grid grid-cols-[1fr_1.05fr] gap-5">
+    <div className="rounded-[18px] border border-gray-100 bg-white p-4 shadow-mockup tablet:p-5">
+      <div className="grid grid-cols-1 gap-5 tablet:grid-cols-[1fr_1.05fr]">
         {/* Columna izquierda — Pago exprés + contacto */}
         <div className="flex flex-col">
           <p className="text-center font-inter text-[11px] text-gray-700">Pago exprés</p>
@@ -412,7 +432,7 @@ function BotonT1Mock() {
                 height={12}
                 style={{ height: "12px", width: "auto" }}
               />
-              <span className="truncate font-inter text-[10px] text-[#0075FF]">
+              <span className="font-inter text-[10px] text-[#0075FF]">
                 4 quincenas de $1,199.75
               </span>
             </div>
