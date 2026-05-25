@@ -65,9 +65,11 @@ export default function CanalesKueski() {
                   >
                     {canal.titulo}
                   </h3>
-                  <p className="mt-2 font-inter text-[14px] leading-[1.5] text-gray-700">
-                    {canal.descripcion}
-                  </p>
+                  {isActive && (
+                    <p className="mt-2 font-inter text-[14px] leading-[1.5] text-gray-700">
+                      {canal.descripcion}
+                    </p>
+                  )}
                 </button>
 
                 {/* Mock visual dentro de la card SOLO en mobile cuando es activa */}
