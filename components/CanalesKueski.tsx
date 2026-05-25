@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import SectionWrapper from "./SectionWrapper";
 import { CANALES } from "@/lib/constants";
@@ -8,6 +8,31 @@ import { CANALES } from "@/lib/constants";
 export default function CanalesKueski() {
   const [active, setActive] = useState<number | null>(null);
   const c = active !== null ? CANALES[active] : null;
+
+  // En desktop siempre hay una card activa (la primera por default).
+  // En mobile pueden estar todas cerradas (accordion).
+  useEffect(() => {
+    const mql = window.matchMedia("(min-width: 1024px)");
+    const sync = () => {
+      if (mql.matches) {
+        setActive((prev) => (prev === null ? 0 : prev));
+      }
+    };
+    sync();
+    mql.addEventListener("change", sync);
+    return () => mql.removeEventListener("change", sync);
+  }, []);
+
+  const handleClick = (i: number, isActive: boolean) => {
+    const isDesktop =
+      typeof window !== "undefined" &&
+      window.matchMedia("(min-width: 1024px)").matches;
+    if (isDesktop) {
+      setActive(i);
+    } else {
+      setActive(isActive ? null : i);
+    }
+  };
 
   return (
     <SectionWrapper id="canales" className="bg-[#FFFAFA] py-20 tablet:py-28" wide>
@@ -41,7 +66,7 @@ export default function CanalesKueski() {
                   <span className="absolute left-0 top-0 h-full w-1 bg-[#E26153]" aria-hidden="true" />
                 )}
                 <button
-                  onClick={() => setActive(isActive ? null : i)}
+                  onClick={() => handleClick(i, isActive)}
                   aria-expanded={isActive}
                   className="block w-full p-5 text-left tablet:p-6"
                 >
@@ -70,16 +95,18 @@ export default function CanalesKueski() {
                       </h3>
                     </div>
                     <ChevronDownIcon
-                      className={`mt-1 h-5 w-5 flex-none text-[#E26153] transition-transform duration-300 ${
+                      className={`mt-1 h-5 w-5 flex-none text-[#E26153] transition-transform duration-300 tablet:hidden ${
                         isActive ? "rotate-180" : ""
                       }`}
                     />
                   </div>
-                  {isActive && (
-                    <p className="mt-2 font-inter text-[14px] leading-[1.5] text-gray-700">
-                      {canal.descripcion}
-                    </p>
-                  )}
+                  <p
+                    className={`mt-2 font-inter text-[14px] leading-[1.5] text-gray-700 ${
+                      isActive ? "block" : "hidden"
+                    } tablet:block`}
+                  >
+                    {canal.descripcion}
+                  </p>
                 </button>
 
                 {/* Mock visual dentro de la card SOLO en mobile cuando es activa */}
