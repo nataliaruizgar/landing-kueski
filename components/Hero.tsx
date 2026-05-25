@@ -85,7 +85,7 @@ export default function Hero() {
           <span className="text-[#E26153]">Kueski</span> desde el primer día.
         </h1>
 
-        <p className="-mx-6 mt-8 text-center font-inter text-[11px] font-light leading-normal text-black tablet:mx-auto tablet:mt-10 tablet:max-w-[680px] tablet:text-[18px] tablet:leading-[28px]">
+        <p className="mx-auto mt-8 max-w-[680px] text-center font-inter text-[16px] font-light leading-[1.4] text-black tablet:mt-10 tablet:text-[18px] tablet:leading-[28px]">
           T1 te ayuda a vender, cobrar y enviar a todo México. Todo en uno.
         </p>
 
@@ -136,13 +136,13 @@ export default function Hero() {
         </form>
 
         {/* Chips tipo pill — sólidos peach */}
-        <div className="mx-auto mt-8 flex max-w-[760px] flex-wrap items-center justify-center gap-2.5 tablet:mt-10">
+        <div className="mx-auto mt-8 flex max-w-[760px] flex-wrap items-center justify-center gap-2 tablet:mt-10 tablet:gap-2.5">
           {HERO_CHIPS.map((chip) => (
             <button
               key={chip}
               type="button"
               onClick={() => setPrompt(`Quiero vender productos de ${chip.toLowerCase()}`)}
-              className="rounded-full bg-[#F8D2CC] px-5 py-2.5 font-inter text-[14px] font-medium text-[#4C4C4C] transition-all hover:bg-[#F2B5AE] hover:text-gray-900"
+              className="rounded-full bg-[#F8D2CC] px-3.5 py-1.5 font-inter text-[12px] font-medium text-[#4C4C4C] transition-all hover:bg-[#F2B5AE] hover:text-gray-900 tablet:px-5 tablet:py-2.5 tablet:text-[14px]"
             >
               {chip}
             </button>
@@ -150,9 +150,9 @@ export default function Hero() {
         </div>
 
         {/* Stats inline */}
-        <p className="mx-auto mt-14 flex max-w-[760px] flex-nowrap items-center justify-center gap-x-2.5 text-center font-inter text-[11px] font-medium text-gray-900 tablet:mt-20 tablet:flex-wrap tablet:gap-x-5 tablet:gap-y-1 tablet:text-[17px]">
+        <p className="mx-auto mt-14 flex max-w-[760px] flex-wrap items-center justify-center gap-x-4 gap-y-1 text-center font-inter text-[14px] font-medium text-gray-900 tablet:mt-20 tablet:gap-x-5 tablet:text-[17px]">
           {HERO_STATS_INLINE.map((s, i) => (
-            <span key={s} className="inline-flex items-center gap-2.5 whitespace-nowrap tablet:gap-5">
+            <span key={s} className="inline-flex items-center gap-4 whitespace-nowrap tablet:gap-5">
               {s}
               {i < HERO_STATS_INLINE.length - 1 && (
                 <span className="text-gray-400" aria-hidden="true">
