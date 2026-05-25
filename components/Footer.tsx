@@ -15,11 +15,11 @@ const LINKS_T1 = [
 ];
 
 const SOCIALES = [
-  { label: "LinkedIn", href: "https://linkedin.com/company/t1", icon: LinkedInIcon },
-  { label: "Instagram", href: "https://instagram.com/t1", icon: InstagramIcon },
-  { label: "X", href: "https://x.com/t1", icon: XIcon },
-  { label: "Facebook", href: "https://facebook.com/t1", icon: FacebookIcon },
-  { label: "TikTok", href: "https://tiktok.com/@t1", icon: TikTokIcon },
+  { label: "LinkedIn", href: "https://www.linkedin.com/company/t1latam", icon: LinkedInIcon },
+  { label: "Instagram", href: "https://www.instagram.com/t1latam_", icon: InstagramIcon },
+  { label: "X", href: "https://x.com/t1latam_", icon: XIcon },
+  { label: "Facebook", href: "https://www.facebook.com/T1latinoamerica", icon: FacebookIcon },
+  { label: "TikTok", href: "https://www.tiktok.com/@t1latam_", icon: TikTokIcon },
 ];
 
 export default function Footer() {
