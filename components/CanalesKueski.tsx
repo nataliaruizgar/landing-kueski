@@ -6,8 +6,8 @@ import SectionWrapper from "./SectionWrapper";
 import { CANALES } from "@/lib/constants";
 
 export default function CanalesKueski() {
-  const [active, setActive] = useState(0);
-  const c = CANALES[active];
+  const [active, setActive] = useState<number | null>(null);
+  const c = active !== null ? CANALES[active] : null;
 
   return (
     <SectionWrapper id="canales" className="bg-[#FFFAFA] py-20 tablet:py-28" wide>
@@ -41,30 +41,40 @@ export default function CanalesKueski() {
                   <span className="absolute left-0 top-0 h-full w-1 bg-[#E26153]" aria-hidden="true" />
                 )}
                 <button
-                  onClick={() => setActive(i)}
+                  onClick={() => setActive(isActive ? null : i)}
+                  aria-expanded={isActive}
                   className="block w-full p-5 text-left tablet:p-6"
                 >
-                  <div className="flex items-center justify-between gap-3">
-                    <span
-                      className={`font-inter text-[11px] font-semibold uppercase tracking-[0.15em] ${
-                        isActive ? "text-[#E26153]" : "text-gray-600"
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <span
+                          className={`font-inter text-[11px] font-semibold uppercase tracking-[0.15em] ${
+                            isActive ? "text-[#E26153]" : "text-gray-600"
+                          }`}
+                        >
+                          {canal.eyebrow}
+                        </span>
+                        {canal.badge && (
+                          <span className="rounded-full bg-[#E26153] px-2 py-0.5 font-inter text-[10px] font-semibold uppercase tracking-wider text-white">
+                            {canal.badge}
+                          </span>
+                        )}
+                      </div>
+                      <h3
+                        className={`mt-2 font-sora text-[20px] font-normal leading-[1.2] tablet:text-[22px] ${
+                          isActive ? "text-gray-900" : "text-gray-700"
+                        }`}
+                      >
+                        {canal.titulo}
+                      </h3>
+                    </div>
+                    <ChevronDownIcon
+                      className={`mt-1 h-5 w-5 flex-none text-[#E26153] transition-transform duration-300 ${
+                        isActive ? "rotate-180" : ""
                       }`}
-                    >
-                      {canal.eyebrow}
-                    </span>
-                    {canal.badge && (
-                      <span className="rounded-full bg-[#E26153] px-2 py-0.5 font-inter text-[10px] font-semibold uppercase tracking-wider text-white">
-                        {canal.badge}
-                      </span>
-                    )}
+                    />
                   </div>
-                  <h3
-                    className={`mt-2 font-sora text-[20px] font-normal leading-[1.2] tablet:text-[22px] ${
-                      isActive ? "text-gray-900" : "text-gray-700"
-                    }`}
-                  >
-                    {canal.titulo}
-                  </h3>
                   {isActive && (
                     <p className="mt-2 font-inter text-[14px] leading-[1.5] text-gray-700">
                       {canal.descripcion}
@@ -101,18 +111,26 @@ export default function CanalesKueski() {
             style={{ background: "radial-gradient(circle, #F1B0A9, transparent 70%)", filter: "blur(70px)" }}
           />
 
-          <div className="relative z-10">
-            <h3 className="font-sora text-[26px] font-normal leading-[1.15] text-gray-900 tablet:text-[32px]">
-              {c.titulo}
-            </h3>
+          {c ? (
+            <div className="relative z-10">
+              <h3 className="font-sora text-[26px] font-normal leading-[1.15] text-gray-900 tablet:text-[32px]">
+                {c.titulo}
+              </h3>
 
-            {/* Mock visual segun canal */}
-            <div className="mt-7">
-              {active === 0 && <LinkProductoMock />}
-              {active === 1 && <PasarelaMock />}
-              {active === 2 && <BotonT1Mock />}
+              {/* Mock visual segun canal */}
+              <div className="mt-7">
+                {active === 0 && <LinkProductoMock />}
+                {active === 1 && <PasarelaMock />}
+                {active === 2 && <BotonT1Mock />}
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="relative z-10 flex h-full min-h-[400px] items-center justify-center">
+              <p className="text-center font-inter text-[15px] text-gray-500">
+                Selecciona un canal para ver el detalle
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </SectionWrapper>
@@ -455,6 +473,20 @@ function ShareIcon({ className = "" }: { className?: string }) {
         d="M4 12v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-6M16 6l-4-4-4 4M12 2v13"
         stroke="currentColor"
         strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function ChevronDownIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+      <path
+        d="m6 9 6 6 6-6"
+        stroke="currentColor"
+        strokeWidth="2.2"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
