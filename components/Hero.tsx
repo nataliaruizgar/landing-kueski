@@ -82,7 +82,7 @@ export default function Hero() {
         {/* H0 */}
         <h1 className="text-balance mx-auto max-w-[1040px] text-center font-sora text-[36px] font-light leading-[1.1] text-gray-900 tablet:text-[56px]">
           Crea tu tienda en línea y vende con{" "}
-          <span className="text-[#E26153]">Kueski</span> desde el primer día.
+          <span className="text-[#E26153]">Kueski</span> sin complicaciones.
         </h1>
 
         <p className="mx-auto mt-8 max-w-[680px] text-center font-inter text-[16px] font-light leading-[1.4] text-black tablet:mt-10 tablet:text-[18px] tablet:leading-[28px]">
