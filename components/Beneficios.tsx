@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import { BENEFICIOS } from "@/lib/constants";
-import SectionWrapper from "./SectionWrapper";
 
 const ICONOS = [TiendaIcon, KueskiIcon, CoinsIcon];
 
@@ -44,18 +43,20 @@ export default function Beneficios() {
   const goNext = () => scrollToIndex(Math.min(BENEFICIOS.length - 1, activeIndex + 1));
 
   return (
-    <SectionWrapper className="bg-white pt-12 pb-10 tablet:pt-16 tablet:pb-14">
-      <div className="max-w-[760px]">
-        <h2 className="font-sora text-[32px] font-light leading-[1.1] text-gray-900 tablet:text-[44px]">
-          Todo lo que necesitas para vender más,
-          <span className="text-[#E26153]"> sin gastar miles de pesos.</span>
-        </h2>
+    <section className="relative w-full bg-white pt-12 pb-10 tablet:pt-16 tablet:pb-14">
+      <div className="mx-auto max-w-[1180px] px-6">
+        <div className="max-w-[760px]">
+          <h2 className="font-sora text-[32px] font-light leading-[1.1] text-gray-900 tablet:text-[44px]">
+            Todo lo que necesitas para vender más,
+            <span className="text-[#E26153]"> sin gastar miles de pesos.</span>
+          </h2>
+        </div>
       </div>
 
-      {/* Track: carrusel horizontal en mobile, grid en desktop */}
+      {/* Track: carrusel horizontal en mobile (full-bleed), grid en desktop */}
       <div
         ref={trackRef}
-        className="no-scrollbar -mx-6 mt-14 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-6 pb-2 tablet:mx-0 tablet:grid tablet:snap-none tablet:grid-cols-3 tablet:gap-6 tablet:overflow-visible tablet:px-0"
+        className="no-scrollbar mt-14 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-6 pb-2 tablet:mx-auto tablet:grid tablet:max-w-[1180px] tablet:snap-none tablet:grid-cols-3 tablet:gap-6 tablet:overflow-visible tablet:px-6"
       >
         {BENEFICIOS.map((b, i) => {
           const Icon = ICONOS[i];
@@ -109,42 +110,44 @@ export default function Beneficios() {
       </div>
 
       {/* Controles del carrusel — solo mobile */}
-      <div className="mt-6 flex items-center justify-between tablet:hidden">
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            aria-label="Anterior"
-            onClick={goPrev}
-            disabled={activeIndex === 0}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-700 transition-opacity disabled:opacity-40"
-          >
-            <ChevronLeftIcon className="h-4 w-4" />
-          </button>
-          <button
-            type="button"
-            aria-label="Siguiente"
-            onClick={goNext}
-            disabled={activeIndex === BENEFICIOS.length - 1}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-700 transition-opacity disabled:opacity-40"
-          >
-            <ChevronRightIcon className="h-4 w-4" />
-          </button>
-        </div>
-        <div className="flex items-center gap-1.5">
-          {BENEFICIOS.map((_, i) => (
+      <div className="mx-auto max-w-[1180px] px-6 tablet:hidden">
+        <div className="mt-6 flex items-center justify-between">
+          <div className="flex items-center gap-2">
             <button
-              key={i}
               type="button"
-              aria-label={`Ir a tarjeta ${i + 1}`}
-              onClick={() => scrollToIndex(i)}
-              className={`h-2 rounded-full transition-all ${
-                i === activeIndex ? "w-6 bg-[#E26153]" : "w-2 bg-gray-300"
-              }`}
-            />
-          ))}
+              aria-label="Anterior"
+              onClick={goPrev}
+              disabled={activeIndex === 0}
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-700 transition-opacity disabled:opacity-40"
+            >
+              <ChevronLeftIcon className="h-4 w-4" />
+            </button>
+            <button
+              type="button"
+              aria-label="Siguiente"
+              onClick={goNext}
+              disabled={activeIndex === BENEFICIOS.length - 1}
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-700 transition-opacity disabled:opacity-40"
+            >
+              <ChevronRightIcon className="h-4 w-4" />
+            </button>
+          </div>
+          <div className="flex items-center gap-1.5">
+            {BENEFICIOS.map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                aria-label={`Ir a tarjeta ${i + 1}`}
+                onClick={() => scrollToIndex(i)}
+                className={`h-2 rounded-full transition-all ${
+                  i === activeIndex ? "w-6 bg-[#E26153]" : "w-2 bg-gray-300"
+                }`}
+              />
+            ))}
+          </div>
         </div>
       </div>
-    </SectionWrapper>
+    </section>
   );
 }
 
