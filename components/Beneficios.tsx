@@ -1,9 +1,48 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import { BENEFICIOS } from "@/lib/constants";
 import SectionWrapper from "./SectionWrapper";
 
 const ICONOS = [TiendaIcon, KueskiIcon, CoinsIcon];
 
 export default function Beneficios() {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<(HTMLElement | null)[]>([]);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    const handleScroll = () => {
+      const trackRect = track.getBoundingClientRect();
+      const trackCenter = trackRect.left + trackRect.width / 2;
+      let closestIndex = 0;
+      let closestDistance = Infinity;
+      cardRefs.current.forEach((card, i) => {
+        if (!card) return;
+        const cardRect = card.getBoundingClientRect();
+        const cardCenter = cardRect.left + cardRect.width / 2;
+        const distance = Math.abs(trackCenter - cardCenter);
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestIndex = i;
+        }
+      });
+      setActiveIndex(closestIndex);
+    };
+    track.addEventListener("scroll", handleScroll, { passive: true });
+    return () => track.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToIndex = (i: number) => {
+    const card = cardRefs.current[i];
+    card?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+  };
+
+  const goPrev = () => scrollToIndex(Math.max(0, activeIndex - 1));
+  const goNext = () => scrollToIndex(Math.min(BENEFICIOS.length - 1, activeIndex + 1));
+
   return (
     <SectionWrapper className="bg-white pt-12 pb-10 tablet:pt-16 tablet:pb-14">
       <div className="max-w-[760px]">
@@ -13,14 +52,21 @@ export default function Beneficios() {
         </h2>
       </div>
 
-      <div className="mt-14 grid gap-6 tablet:grid-cols-3">
+      {/* Track: carrusel horizontal en mobile, grid en desktop */}
+      <div
+        ref={trackRef}
+        className="no-scrollbar -mx-6 mt-14 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-6 pb-2 tablet:mx-0 tablet:grid tablet:snap-none tablet:grid-cols-3 tablet:gap-6 tablet:overflow-visible tablet:px-0"
+      >
         {BENEFICIOS.map((b, i) => {
           const Icon = ICONOS[i];
           const destacada = b.destacada === true;
           return (
             <article
               key={b.titulo}
-              className={`group relative flex flex-col rounded-card border p-7 transition-all duration-300 hover:-translate-y-1 ${
+              ref={(el) => {
+                cardRefs.current[i] = el;
+              }}
+              className={`group relative flex w-[85%] flex-none snap-center flex-col rounded-card border p-7 transition-all duration-300 hover:-translate-y-1 tablet:w-auto tablet:flex-1 tablet:snap-none ${
                 destacada
                   ? "border-[#E26153]/35 bg-gradient-to-br from-white via-[#FFF7F6] to-[#FFEFEC] shadow-[0_18px_45px_-10px_rgba(226,97,83,0.20)] hover:border-[#E26153]/60 hover:shadow-[0_24px_60px_-12px_rgba(226,97,83,0.30)]"
                   : "border-gray-100 bg-white shadow-card hover:border-[#E26153]/25 hover:shadow-cardHover"
@@ -60,6 +106,43 @@ export default function Beneficios() {
             </article>
           );
         })}
+      </div>
+
+      {/* Controles del carrusel — solo mobile */}
+      <div className="mt-6 flex items-center justify-between tablet:hidden">
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            aria-label="Anterior"
+            onClick={goPrev}
+            disabled={activeIndex === 0}
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-700 transition-opacity disabled:opacity-40"
+          >
+            <ChevronLeftIcon className="h-4 w-4" />
+          </button>
+          <button
+            type="button"
+            aria-label="Siguiente"
+            onClick={goNext}
+            disabled={activeIndex === BENEFICIOS.length - 1}
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-700 transition-opacity disabled:opacity-40"
+          >
+            <ChevronRightIcon className="h-4 w-4" />
+          </button>
+        </div>
+        <div className="flex items-center gap-1.5">
+          {BENEFICIOS.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              aria-label={`Ir a tarjeta ${i + 1}`}
+              onClick={() => scrollToIndex(i)}
+              className={`h-2 rounded-full transition-all ${
+                i === activeIndex ? "w-6 bg-[#E26153]" : "w-2 bg-gray-300"
+              }`}
+            />
+          ))}
+        </div>
       </div>
     </SectionWrapper>
   );
@@ -117,6 +200,34 @@ function CoinsIcon({ className = "" }: { className?: string }) {
         d="M12.5 14v3c0 1.1 1.8 2 4 2s4-.9 4-2v-3"
         stroke="currentColor"
         strokeWidth="1.6"
+      />
+    </svg>
+  );
+}
+
+function ChevronLeftIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+      <path
+        d="m15 6-6 6 6 6"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function ChevronRightIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+      <path
+        d="m9 6 6 6-6 6"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
